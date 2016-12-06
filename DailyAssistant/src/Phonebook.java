@@ -1,4 +1,3 @@
-
 public class Phonebook {
 	private String name;
 	private String number;
@@ -14,6 +13,5 @@ public class Phonebook {
 	}
 	public void setNumber(String number) {
 		this.number = number;
-	}
-	
+	}	
 }
