@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class NoteManager extends DailyManageOutline {
-
+	
 	private String user_id;
 	private Note[] noteData;
 	private int current_note_size;
@@ -12,7 +12,6 @@ public class NoteManager extends DailyManageOutline {
 		this.user_id = user_id;
 		noteData = new Note[MAXIMUM_SISE_OF_NOTE];
 		//Open User's note DB Infomation & Copy into noteData
-		
 	}
 	
 	public void add() {
