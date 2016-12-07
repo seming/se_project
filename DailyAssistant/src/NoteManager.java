@@ -3,7 +3,7 @@ import java.util.Vector;
 public class NoteManager extends DailyManageOutline {
 
 	public String user_id;
-	private Vector<Note> noteData;
+	private Note[] noteData;
 	
 	public NoteManager(/*TO BE FILLED*/) {
 
