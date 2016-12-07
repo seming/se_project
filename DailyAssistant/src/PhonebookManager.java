@@ -2,7 +2,7 @@ import java.util.Vector;
 
 public class PhonebookManager extends DailyManageOutline {
 	public String user_id;
-	private Vector<Phonebook> phonebookData;
+	private Phonebook[] phonebookData;
 	
 	public PhonebookManager(/*TO BE FILLED*/) {
 		
