@@ -15,6 +15,7 @@ public class AccountChanger {
 		System.out.println("현재 비밀번호를 입력해주세요.");
 		Scanner scan = new Scanner (System.in);
 		passwordForIdentify = scan.nextLine();
+		
 		if (passwordForIdentify.equals(password)) {
 			return true;
 		}
@@ -57,9 +58,9 @@ public class AccountChanger {
 			newPasswordForChange = scan.nextLine();
 			System.out.println("확인을 위해 다시 한번 입력해주세요.");
 			newPasswordForIdentify = scan.nextLine();
-		
+			
 			if(newPasswordForChange.equals(newPasswordForIdentify)){
-				id = ChangeToNewValue(newPasswordForChange);
+				password = ChangeToNewValue(newPasswordForChange);
 				System.out.println("비밀번호가 성공적으로 변경되었습니다.");
 			}
 			else{
@@ -69,7 +70,8 @@ public class AccountChanger {
 		}while(!isPasswordValueSame);
 	}
 	
-	public String ChangeToNewValue(String newValue) {
+	private String ChangeToNewValue(String newValue) {
 		return newValue;
 	}
+	
 }
