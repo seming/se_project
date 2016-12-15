@@ -1,29 +1,22 @@
 import java.util.Scanner;
+import java.util.Vector;
 
 public class NoteManager extends DailyManageOutline {
 	
 	private String user_id;
-	private Note[] noteData;
+	private Vector<Note> noteData;
 	private int current_note_size;
 	private static final int MAXIMUM_SISE_OF_NOTE = 100;
 
 	
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
-		noteData = new Note[MAXIMUM_SISE_OF_NOTE];
+		noteData = new Vector<Note>(MAXIMUM_SISE_OF_NOTE);
 		//Open User's note DB Infomation & Copy into noteData
 	}
 	
 	public void add() {
-		Scanner sc = new Scanner(System.in);
-		String new_note_contents;
-		int new_note_id;
-		do{
-			System.out.print("노트 내용을 입력하세요 : ");
-			new_note_contents = sc.nextLine();
-		}while(isOutOfRange(new_note_contents));
-		new_note_id = current_note_size++;
-		noteData[new_note_id] = new_note_contents;
+		//NEED TO BE MODIFIED
 	}
 
 	private boolean isOutOfRange(String string){
@@ -40,7 +33,7 @@ public class NoteManager extends DailyManageOutline {
 		int id_to_be_deleted = sc.nextInt();
 		
 		if(isExistingNote(id_to_be_deleted))
-			coverHoleInArrayByDeletion(id_to_be_deleted);
+			;//NEED TO BE MODIFIED
 		else
 			System.out.println("해당 ID의 노트가 없습니다");
 		
@@ -52,17 +45,12 @@ public class NoteManager extends DailyManageOutline {
 	}
 
 	private boolean isExistingNote(int note_id){
-		if(note_id<0)
+		if(note_id < 0)
 			return false;
-		if(noteData[note_id]==null)
+		if(note_id > noteData.capacity())
 			return false;
 		return true;
 	}
-	
-	private void coverHoleInArrayByDeletion(int hole_index){
-		//Need to be filled!
-	}
-	
 	
 }
 
