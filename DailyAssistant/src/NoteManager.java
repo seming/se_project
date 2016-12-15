@@ -5,10 +5,8 @@ public class NoteManager extends DailyManageOutline {
 	
 	private String user_id;
 	private Vector<Note> noteData;
-	private int current_note_size;
 	private static final int MAXIMUM_SISE_OF_NOTE = 100;
 
-	
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
 		noteData = new Vector<Note>(MAXIMUM_SISE_OF_NOTE);
@@ -33,7 +31,7 @@ public class NoteManager extends DailyManageOutline {
 		int id_to_be_deleted = sc.nextInt();
 		
 		if(isExistingNote(id_to_be_deleted))
-			;//NEED TO BE MODIFIED
+			noteData.remove(id_to_be_deleted);
 		else
 			System.out.println("해당 ID의 노트가 없습니다");
 		
@@ -41,7 +39,10 @@ public class NoteManager extends DailyManageOutline {
 	}
 
 	public void viewAllList() {
-
+		for(int i=0;i<noteData.capacity();i++){
+			Note noteForView = noteData.elementAt(i);
+			System.out.println("note id : "+i+"/t"+noteForView.getContents());
+		}
 	}
 
 	private boolean isExistingNote(int note_id){
