@@ -6,7 +6,11 @@ public class PhonebookManager extends DailyManageOutline {
 	private Vector<Phonebook> phonebookData;
 	
 	public PhonebookManager(String user_id) {
+		this.user_id = user_id;
 		phonebookData = new Vector<Phonebook>();	//새로 만드는게 아닌 파일에서 가져올 수 있도록 수정요함
+	}
+	
+	public void askUserNextAction() {
 		Scanner scan = new Scanner(System.in);
 		do {
 			viewAllList();
@@ -42,7 +46,7 @@ public class PhonebookManager extends DailyManageOutline {
 		System.out.print("추가할 연락처의 전화번호를 입력하십시오(- 제외하여 입력) : ");
 		String newNumber = scan.nextLine();
 		
-		if(newName.isEmpty() || newNumber.isEmpty()) {
+		if(isEmptyNameOrEmptyNumber(newName, newNumber)) {
 			System.out.println("이름 혹은 전화번호가 비어있습니다.");
 			if(alarmWhenCancel() == true)
 				return;
@@ -55,6 +59,16 @@ public class PhonebookManager extends DailyManageOutline {
 			phonebookData.addElement(newPhoneBook);
 			System.out.println("저장되었습니다");
 		}
+	}
+	
+	public boolean isEmptyNameOrEmptyNumber(String name, String phonenumber) {
+		if(name.isEmpty())
+			return true;
+		else
+			if(phonenumber.isEmpty())
+				return true;
+			else
+				return false;
 	}
 	
 	public String checkNumberAndModifyIfOutOfRange(String phonenumber) {
