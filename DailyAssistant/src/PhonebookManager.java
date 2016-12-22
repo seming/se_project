@@ -1,3 +1,7 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -7,7 +11,21 @@ public class PhonebookManager extends DailyManageOutline {
 	
 	public PhonebookManager(String user_id) {
 		this.user_id = user_id;
-		phonebookData = new Vector<Phonebook>();	//새로 만드는게 아닌 파일에서 가져올 수 있도록 수정요함
+		phonebookData = new Vector<Phonebook>();
+		getSavedPhonebookData();
+	}
+	
+	public void getSavedPhonebookData() {
+		try {
+			FileInputStream fin = new FileInputStream("phonebookDB.txt");
+			ObjectInputStream ois = new ObjectInputStream(fin);
+			phonebookData = (Vector<Phonebook>) ois.readObject();
+			ois.close();
+			fin.close();
+		}
+		catch (Exception exc) {
+			System.out.println("오류가 발생하였습니다 "+exc);
+		}
 	}
 	
 	public void askUserNextAction() {
@@ -24,6 +42,7 @@ public class PhonebookManager extends DailyManageOutline {
 				delete();
 				break;
 			case 3 :
+				saveAndExit();
 				return;
 			default :
 				System.out.println("잘못 입력하였습니다");
@@ -111,5 +130,18 @@ public class PhonebookManager extends DailyManageOutline {
 			System.out.println(", 전화번호 : " + phonebookData.get(i).getNumber());
 		}
 		System.out.println("====================================");
+	}
+	
+	public void saveAndExit() {
+		try {
+			FileOutputStream fout = new FileOutputStream("phonebookDB.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fout);
+			oos.writeObject(phonebookData);
+			oos.close();
+			fout.close();
+		}
+		catch (Exception exc) {
+			System.out.println("오류가 발생하였습니다 "+exc);
+		}
 	}
 }

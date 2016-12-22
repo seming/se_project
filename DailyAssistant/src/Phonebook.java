@@ -1,4 +1,6 @@
-public class Phonebook {
+import java.io.Serializable;
+
+public class Phonebook implements Serializable {
 	private String name;
 	private String number;
 	
