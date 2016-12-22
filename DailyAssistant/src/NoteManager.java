@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
@@ -11,9 +16,32 @@ public class NoteManager extends DailyManageOutline {
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
 		noteData = new Vector<Note>(MAXIMUM_SISE_OF_NOTE);
-		//Open User's note DB Infomation & Copy into noteData
+		getSavedNoteData();
 	}
 	
+	private void getSavedNoteData() {
+		//Need refactoring
+		String inputFilePath = "./"+user_id+"_noteDB.txt";
+		File inputfile = new File(inputFilePath);
+		if(!inputfile.isFile()){
+			try {
+				inputfile.createNewFile();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			FileInputStream fileinputstream = new FileInputStream(inputfile);
+			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
+			noteData = (Vector<Note>) objectinputstream.readObject();
+			objectinputstream.close();
+			fileinputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void askUserNextAction() {
 		Scanner scan = new Scanner(System.in);
  		do {
@@ -71,6 +99,7 @@ public class NoteManager extends DailyManageOutline {
 	}
 	
 	public void delete() {
+		//Need refactoring
 		Scanner sc = new Scanner(System.in);
 		System.out.print("삭제할 노트의 ID를 입력하세요 : ");
 		try{
@@ -112,7 +141,16 @@ public class NoteManager extends DailyManageOutline {
 	}
 	
 	public void saveAndExit() {
-		
+		String inputFilePath = "./"+user_id+"_noteDB.txt";
+		try {
+			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
+			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
+			noteData = (Vector<Note>) objectinputstream.readObject();
+			objectinputstream.close();
+			fileinputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
 
