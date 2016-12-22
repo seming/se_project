@@ -31,8 +31,6 @@ public class NoteManager extends DailyManageOutline {
 			newNote.setNote_id(noteData.size());
 			noteData.add(newNote);
 		}
-		
-		sc.close();
 	}
 
 	private boolean isOutOfRange(String string){
@@ -62,11 +60,10 @@ public class NoteManager extends DailyManageOutline {
 			else
 				delete();
 		}
-		sc.close();
 	}
 
 	public void viewAllList() {
-		for(int i=0;i<noteData.capacity();i++){
+		for(int i=0;i<noteData.size();i++){
 			Note noteForView = noteData.elementAt(i);
 			System.out.println("note id : "+i+"/t"+noteForView.getContents());
 		}
@@ -75,7 +72,7 @@ public class NoteManager extends DailyManageOutline {
 	private boolean isExistingNote(int note_id){
 		if(note_id < 0)
 			return false;
-		if(note_id > noteData.capacity())
+		if(note_id > noteData.size())
 			return false;
 		return true;
 	}
