@@ -14,6 +14,35 @@ public class NoteManager extends DailyManageOutline {
 		//Open User's note DB Infomation & Copy into noteData
 	}
 	
+	public void askUserNextAction() {
+		Scanner scan = new Scanner(System.in);
+ 		do {
+ 			viewAllList();
+ 			printMenu();
+ 			int menuNumber = scan.nextInt();
+ 			switch(menuNumber) {
+ 			case 1 :
+ 				add();
+ 				break;
+ 			case 2 :
+  				delete();
+  				break;
+ 			case 3 :
+ 				saveAndExit();
+ 				return;
+  			default :
+  				System.out.println("잘못 입력하였습니다");
+ 			}
+ 		} while(true);
+	}
+	
+	private void printMenu() {
+ 		System.out.println("1. 추가");
+ 		System.out.println("2. 삭제");
+ 		System.out.println("3. 돌아가기");
+ 		System.out.print("입력 : ");
+ 	}
+	
 	public void add() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("새로 추가할 노트의 내용을 입력하세요.(※범주 : 1~30자)");
@@ -33,7 +62,7 @@ public class NoteManager extends DailyManageOutline {
 		}
 	}
 
-	private boolean isOutOfRange(String string){
+	private boolean isOutOfRange(String string) {
 		int length = string.length();
 		if(length>30 || length<=0)
 			return true;
@@ -63,13 +92,18 @@ public class NoteManager extends DailyManageOutline {
 	}
 
 	public void viewAllList() {
+		if(noteData.size() == 0){
+			System.out.println("저장된 노트가 없습니다.");
+			return;
+		}
+		System.out.println("id\t contents");
 		for(int i=0;i<noteData.size();i++){
 			Note noteForView = noteData.elementAt(i);
-			System.out.println("note id : "+i+"/t"+noteForView.getContents());
+			System.out.println(i+"\t "+noteForView.getContents());
 		}
 	}
 
-	private boolean isExistingNote(int note_id){
+	private boolean isExistingNote(int note_id) {
 		if(note_id < 0)
 			return false;
 		if(note_id > noteData.size())
@@ -77,5 +111,8 @@ public class NoteManager extends DailyManageOutline {
 		return true;
 	}
 	
+	public void saveAndExit() {
+		
+	}
 }
 
