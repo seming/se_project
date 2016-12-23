@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
@@ -16,15 +18,25 @@ public class PhonebookManager extends DailyManageOutline {
 	}
 	
 	public void getSavedPhonebookData() {
+		String inputFilePath = "database\\"+user_id+"_phonebookDB.txt";
+		createNewFileIfNoFile(inputFilePath);
 		try {
-			FileInputStream fin = new FileInputStream("phonebookDB.txt");
-			ObjectInputStream ois = new ObjectInputStream(fin);
-			phonebookData = (Vector<Phonebook>) ois.readObject();
-			ois.close();
-			fin.close();
+			FileInputStream fileInputStream = new FileInputStream(inputFilePath);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			phonebookData = (Vector<Phonebook>) objectInputStream.readObject();
+			objectInputStream.close();
+			fileInputStream.close();
 		}
-		catch (Exception exc) {
-			System.out.println("오류가 발생하였습니다 "+exc);
+		catch (Exception exc) {}
+	}
+	
+	private void createNewFileIfNoFile(String inputfilepath) {
+		File inputfile = new File(inputfilepath);
+		if(!inputfile.isFile()){
+			try {
+				inputfile.createNewFile();
+			}
+			catch (IOException e) {}
 		}
 	}
 	
@@ -124,6 +136,8 @@ public class PhonebookManager extends DailyManageOutline {
 	}
 	
 	public void viewAllList() {
+		if(phonebookData.size() == 0)
+			return;
 		System.out.println("==============저장된 연락처===============");
 		for(int i = 0; i < phonebookData.size(); i++) {
 			System.out.print("이름 : " + phonebookData.get(i).getName());
@@ -134,14 +148,15 @@ public class PhonebookManager extends DailyManageOutline {
 	
 	public void saveAndExit() {
 		try {
-			FileOutputStream fout = new FileOutputStream("phonebookDB.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fout);
-			oos.writeObject(phonebookData);
-			oos.close();
-			fout.close();
+			String outputFilePath = "database\\"+user_id+"_phonebookDB.txt";
+			FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+			objectOutputStream.writeObject(phonebookData);
+			objectOutputStream.close();
+			fileOutputStream.close();
 		}
 		catch (Exception exc) {
-			System.out.println("오류가 발생하였습니다 "+exc);
+			exc.printStackTrace();
 		}
 	}
 }
