@@ -29,9 +29,7 @@ public class NoteManager extends DailyManageOutline {
 			noteData = (Vector<Note>) objectinputstream.readObject();
 			objectinputstream.close();
 			fileinputstream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 	}
 
 	private void createNewFileIfNoFile(String inputfilepath) {
@@ -125,11 +123,13 @@ public class NoteManager extends DailyManageOutline {
 		if(noteData.size() == 0){
 			return;
 		}
+		System.out.println("==============저장된 노트===============");
 		System.out.println("id\t contents");
 		for(int i=0;i<noteData.size();i++){
 			Note noteForView = noteData.elementAt(i);
 			System.out.println(i+"\t "+noteForView.getContents());
 		}
+		System.out.println("====================================");	
 	}
 
 	private boolean isExistingNote(int note_id) {
