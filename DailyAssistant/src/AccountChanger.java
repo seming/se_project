@@ -1,3 +1,5 @@
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class AccountChanger {
@@ -5,19 +7,53 @@ public class AccountChanger {
 	public String id;
 	public String password;
 	
-	public AccountChanger(/*TODO Auto-generated method stub*/) {
-		// TODO Auto-generated method stub
+	public AccountChanger() {
+		identifyPassword(password);
+		askUserNextAction();
 	}
 	
-	public boolean identifyPassword(String password) {
+	public void identifyPassword(String password) {
 		String passwordForIdentify;
 		boolean isPasswordForIdentifySame = false;
 		
-		System.out.println("현재 비밀번호를 입력해주세요.");
-		Scanner scan = new Scanner (System.in);
-		passwordForIdentify = scan.nextLine();
-		isPasswordForIdentifySame = checkPasswordForIdentifySame(passwordForIdentify);
-		return isPasswordForIdentifySame;
+		do{
+			System.out.println("현재 비밀번호를 입력해주세요.");
+			Scanner scan = new Scanner (System.in);
+			passwordForIdentify = scan.nextLine();
+			isPasswordForIdentifySame = checkPasswordForIdentifySame(passwordForIdentify);
+			if(!isPasswordForIdentifySame) {
+				System.out.print("비밀번호가 다릅니다. 다시 입력해주세요.");
+			}
+		}while(!isPasswordForIdentifySame);
+	}
+	
+	public void askUserNextAction() {
+		Scanner scan = new Scanner(System.in);
+		do {
+			printMenu();
+			int menuNumber = scan.nextInt();
+			switch(menuNumber) {
+			case 1 :
+				changeId();
+				break;
+			case 2 :
+				changePassword();
+				break;
+			case 3 :
+				//saveAndExit();
+				return;
+			default :
+				System.out.println("잘못 입력하였습니다");
+				break;	
+			}
+		} while(true);
+	}
+	
+	public void printMenu() {
+		System.out.println("1. 아이디 변경");
+		System.out.println("2. 비밀번호 변경");
+		System.out.println("3. 돌아가기");
+		System.out.print("입력 : ");
 	}
 	
 	public void changeId() {
@@ -40,7 +76,7 @@ public class AccountChanger {
 		}while(!isIdInformationSame);
 	}
 	
-	public void changePassword(String newPassword) {
+	public void changePassword() {
 		String newPasswordForChange = null;
 		String newPasswordForIdentify = null;
 		boolean isPasswordInformationSame = false;

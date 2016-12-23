@@ -10,8 +10,11 @@ public class Menu {
 
 	public static void main(String[] args) {		
 		accountmanager = new AccountManager();
+		boolean isLoginSuccess = false;
 		
-		accountmanager.logIn();
+		do{
+			isLoginSuccess = accountmanager.logIn();
+		}while(!isLoginSuccess);
 		
 		do{
 			printMenu();
