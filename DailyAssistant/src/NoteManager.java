@@ -1,14 +1,15 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
 
 public class NoteManager extends DailyManageOutline {
-	
 	private String user_id;
 	private Vector<Note> noteData;
 	private static final int MAXIMUM_SISE_OF_NOTE = 100;
@@ -20,19 +21,10 @@ public class NoteManager extends DailyManageOutline {
 	}
 	
 	private void getSavedNoteData() {
-		//Need refactoring
-		String inputFilePath = "./"+user_id+"_noteDB.txt";
-		File inputfile = new File(inputFilePath);
-		if(!inputfile.isFile()){
-			try {
-				inputfile.createNewFile();
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		String inputFilePath = "database\\"+user_id+"_noteDB.txt";
+		createNewFileIfNoFile(inputFilePath);
 		try {
-			FileInputStream fileinputstream = new FileInputStream(inputfile);
+			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
 			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
 			noteData = (Vector<Note>) objectinputstream.readObject();
 			objectinputstream.close();
@@ -42,6 +34,15 @@ public class NoteManager extends DailyManageOutline {
 		}
 	}
 
+	private void createNewFileIfNoFile(String inputfilepath) {
+		File inputfile = new File(inputfilepath);
+		if(!inputfile.isFile()){
+			try {
+				inputfile.createNewFile();
+			} catch (IOException e) {}
+		}
+	}
+	
 	public void askUserNextAction() {
 		Scanner scan = new Scanner(System.in);
  		do {
@@ -119,10 +120,9 @@ public class NoteManager extends DailyManageOutline {
 				delete();
 		}
 	}
-
+	
 	public void viewAllList() {
 		if(noteData.size() == 0){
-			System.out.println("저장된 노트가 없습니다.");
 			return;
 		}
 		System.out.println("id\t contents");
@@ -141,13 +141,13 @@ public class NoteManager extends DailyManageOutline {
 	}
 	
 	public void saveAndExit() {
-		String inputFilePath = "./"+user_id+"_noteDB.txt";
+		String outputFilePath = "database\\"+user_id+"_noteDB.txt";
 		try {
-			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
-			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
-			noteData = (Vector<Note>) objectinputstream.readObject();
-			objectinputstream.close();
-			fileinputstream.close();
+			FileOutputStream fileoutputstream = new FileOutputStream(outputFilePath);
+			ObjectOutputStream objectoutputstream = new ObjectOutputStream(fileoutputstream);
+			objectoutputstream.writeObject(noteData);
+			objectoutputstream.close();
+			fileoutputstream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
