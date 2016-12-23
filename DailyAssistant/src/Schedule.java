@@ -2,19 +2,24 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Schedule implements Serializable{
+	private String userID;
 	private int year;
 	private int month;
 	private int day;
 	private String contents;
 	
 
-	public Schedule(Date date, String contents) {
+	public Schedule(String userID, Date date, String contents) {
+		this.userID = userID;
 		this.year = date.getYear();
 		this.month = date.getMonth();
 		this.day = date.getDay();
 		this.contents = contents;
 	}
 	
+	public String getUserID(){
+		return userID;
+	}
 	public int getYear() {
 		return year;
 	}

@@ -11,12 +11,13 @@ import java.util.Vector;
 public class ScheduleManager extends DailyManageOutline {
 	public String user_id;
 	private Vector<Schedule> scheduleData;
+	private Vector<Schedule> oneUserScheduleData = null;
 	
 	public ScheduleManager(String userID) {
 		this.user_id = userID;
-		getSavedScheduleData();//userID 확인?
-		if(scheduleData.isEmpty()){
-			DataIsEmpty();
+		getSavedScheduleData();
+		if(DataIsEmpty()){
+			System.out.println("저장된 일정이 없습니다");
 		}
 		else
 			viewAllList();
@@ -54,8 +55,14 @@ public class ScheduleManager extends DailyManageOutline {
 		System.out.print("입력 : ");
 	}
 	
-	public void DataIsEmpty(){
-		System.out.println("저장된 내용이 없습니다");
+	public boolean DataIsEmpty(){
+		for(int i = 0; i < scheduleData.size(); i++) {
+			if (scheduleData.get(i).getUserID().equals(user_id)){
+				return false;
+			}
+			
+		}
+		return true;
 	}
 	
 	public void getSavedScheduleData() {
@@ -70,7 +77,7 @@ public class ScheduleManager extends DailyManageOutline {
 			System.out.println("오류가 발생하였습니다 "+exc);
 		}
 	}
-	
+
 	public void saveAndExit() {
 		try {
 			FileOutputStream fout = new FileOutputStream("scheduleDB.txt");
@@ -129,20 +136,31 @@ public class ScheduleManager extends DailyManageOutline {
 		do{
 			newContents = scan.nextLine();
 			if (newContents.equals("-1")){
-				break;
+				if(alarmWhenCancel()){
+					return;
+				}
+				else
+					;
 			}
 			
 		}while(newContents.isEmpty());{
 			setPopUpWindow("내용을 입력해주세요");
 		}
-		
+
+		newContents = checkLengthOFContentsAndModifyIfOutOfRange(newContents);
 		Date scheduleDate = new Date(newYear, newMonth, newDay);
-		Schedule newSchedule = new Schedule(scheduleDate, newContents);
+		Schedule newSchedule = new Schedule(user_id, scheduleDate, newContents);
 		scheduleData.addElement(newSchedule);
 		setPopUpWindow("저장되었습니다");
 	}
 
-
+	public String checkLengthOFContentsAndModifyIfOutOfRange(String newContents) {
+		if(newContents.length() > 50)
+			return newContents.substring(0, 50);
+		else
+			return newContents;
+	}
+	
 	public boolean DayIsOutOfRange(int newYear, int newMonth, int newDay) {
 		Calendar calendar = Calendar.getInstance( );
 		calendar.set(newYear, newMonth-1, newDay );
@@ -161,17 +179,30 @@ public class ScheduleManager extends DailyManageOutline {
 	@Override
 	public void delete() {
 		// TODO Auto-generated method stub
+		System.out.print("삭제할 일정의 좌측 번호를 입력하세요");
+		Scanner scan = new Scanner(System.in);
+		int index = scan.nextInt();
+		Schedule scheduleToBeDeleted = oneUserScheduleData.get(index);
+		index = scheduleData.indexOf(scheduleToBeDeleted);
+		scheduleData.remove(index);
 		
 	}
 
 	@Override
 	public void viewAllList() {
 		// TODO Auto-generated method stub
+		for (int i = 0; i < scheduleData.size(); i++){
+			if (scheduleData.get(i).equals(user_id)){
+				oneUserScheduleData.addElement(scheduleData.get(i));
+			}
+		}
+		
 		System.out.println("==============저장된 일정===============");
-		for(int i = 0; i < scheduleData.size(); i++) {
-			System.out.print(scheduleData.get(i).getYear()+"연");
-			System.out.print(scheduleData.get(i).getMonth()+"월");
-			System.out.println(scheduleData.get(i).getDay()+"일");
+		for(int i = 0; i < oneUserScheduleData.size(); i++) {
+			System.out.print(i+". ");
+			System.out.print(oneUserScheduleData.get(i).getYear()+"연");
+			System.out.print(oneUserScheduleData.get(i).getMonth()+"월");
+			System.out.println(oneUserScheduleData.get(i).getDay()+"일");
 			System.out.println("일정 : " + scheduleData.get(i).getContents());
 		}
 		System.out.println("====================================");
