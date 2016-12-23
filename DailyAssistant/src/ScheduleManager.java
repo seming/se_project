@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
@@ -66,30 +68,42 @@ public class ScheduleManager extends DailyManageOutline {
 	}
 	
 	public void getSavedScheduleData() {
-		try {
-			FileInputStream fin = new FileInputStream("scheduleDB.txt");
-			ObjectInputStream ois = new ObjectInputStream(fin);
-			scheduleData = (Vector<Schedule>) ois.readObject();
-			ois.close();
-			fin.close();
-		}
-		catch (Exception exc) {
-			System.out.println("오류가 발생하였습니다 "+exc);
-		}
+		String inputFilePath = "scheduleDB.txt";
+ 		File inputfile = new File(inputFilePath);
+ 		
+ 		if(!inputfile.isFile()){
+ 			try {
+ 				inputfile.createNewFile();	
+ 				
+ 			} catch (IOException e) {
+ 				e.printStackTrace();
+ 			}
+ 		}
+
+ 		try {
+ 			FileInputStream fileinputstream = new FileInputStream(inputFilePath); 
+ 			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
+ 			scheduleData = (Vector<Schedule>) objectinputstream.readObject();
+ 			objectinputstream.close();
+ 			fileinputstream.close();
+ 		} catch (Exception e) {
+ 			e.printStackTrace();
+ 		}
 	}
 
 	public void saveAndExit() {
+		String outputFilePath = "scheduleDB.txt";
 		try {
-			FileOutputStream fout = new FileOutputStream("scheduleDB.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fout);
-			oos.writeObject(scheduleData);
-			oos.close();
-			fout.close();
-		}
-		catch (Exception exc) {
-			System.out.println("오류가 발생하였습니다 "+exc);
+			FileOutputStream fileoutputstream = new FileOutputStream(outputFilePath);
+			ObjectOutputStream objectoutputstream = new ObjectOutputStream(fileoutputstream);
+			objectoutputstream.writeObject(scheduleData);
+			fileoutputstream.close();
+			objectoutputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
+
 	
 	@Override
 	public void add() {		
@@ -184,8 +198,7 @@ public class ScheduleManager extends DailyManageOutline {
 		int index = scan.nextInt();
 		Schedule scheduleToBeDeleted = oneUserScheduleData.get(index);
 		index = scheduleData.indexOf(scheduleToBeDeleted);
-		scheduleData.remove(index);
-		
+		scheduleData.remove(index);		
 	}
 
 	@Override
