@@ -13,13 +13,17 @@ public class AccountManager implements Serializable{
 	private String id;
 	private String password;
 	private int isFileEmpty = -1;
-	Vector<String> idData = new Vector();
-	Vector<String> passwordData = new Vector();
+	Vector<String> idData = new Vector<String>();
+	Vector<String> passwordData = new Vector<String>();
 	boolean isSignUp = false;
 	
 	public AccountManager() {
 		getSavedIdData();
 		getSavedPasswordData();
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 	private void getSavedIdData() {
@@ -69,6 +73,7 @@ public class AccountManager implements Serializable{
 	
 	public boolean logIn() {
 		System.out.println("로그인");
+		askUserNextAction();
 		if(isFileEmpty == -1 && isSignUp == false) {
 			isSignUp = viewSignUpMenu();	
 			if(isSignUp == true) {
@@ -79,7 +84,6 @@ public class AccountManager implements Serializable{
 				return false;
 			}
 		}
-		System.out.println(idData.get(0));
 		getAccountInformation();
 		int i;
 		for(i=0; i<idData.size(); i++) {
@@ -99,6 +103,30 @@ public class AccountManager implements Serializable{
 		}
 		System.out.println("아이디가 존재하지 않습니다.");
 		return false;
+	}
+	
+	public void askUserNextAction() {
+		Scanner scan = new Scanner(System.in);
+		do {
+			printMenu();
+			int menuNumber = scan.nextInt();
+			switch(menuNumber) {
+			case 1 :
+				signUp();
+				break;
+			case 2 :
+				return;
+			default :
+				System.out.println("잘못 입력하였습니다");
+				break;	
+			}
+		} while(true);
+	}
+	
+	public void printMenu() {
+		System.out.println("1. 회원가입");
+		System.out.println("2. 로그인");
+		System.out.print("입력 : ");
 	}
 	
 	private boolean viewSignUpMenu() {
@@ -151,6 +179,7 @@ public class AccountManager implements Serializable{
 		idData.addElement(id);
 		passwordData.addElement(password);
 		System.out.println("회원가입 완료");
+		isSignUp = true;
 	}
 	
 	private void getAccountInformation() {
