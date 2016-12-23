@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
@@ -12,11 +13,12 @@ import java.util.Vector;
 public class NoteManager extends DailyManageOutline {
 	private String user_id;
 	private Vector<Note> noteData;
-	private static final int MAXIMUM_SISE_OF_NOTE = 100;
+	private static final int MAXIMUM_SIZE_OF_NOTE_CONTENTS = 30;
+	private static final int MAXIMUM_SIZE_OF_NOTE = 100;
 
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
-		noteData = new Vector<Note>(MAXIMUM_SISE_OF_NOTE);
+		noteData = new Vector<Note>(MAXIMUM_SIZE_OF_NOTE);
 		getSavedNoteData();
 	}
 	
@@ -25,11 +27,14 @@ public class NoteManager extends DailyManageOutline {
 		createNewFileIfNoFile(inputFilePath);
 		try {
 			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
-			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
-			noteData = (Vector<Note>) objectinputstream.readObject();
-			objectinputstream.close();
+			if(fileinputstream.read() > 0){
+				ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
+				noteData = (Vector<Note>) objectinputstream.readObject();
+				objectinputstream.close();
+			}
 			fileinputstream.close();
-		} catch (Exception e) {}
+		}
+		catch (Exception e) {}
 	}
 
 	private void createNewFileIfNoFile(String inputfilepath) {
@@ -37,7 +42,8 @@ public class NoteManager extends DailyManageOutline {
 		if(!inputfile.isFile()){
 			try {
 				inputfile.createNewFile();
-			} catch (IOException e) {}
+			}
+			catch (IOException e) {}
 		}
 	}
 	
@@ -89,33 +95,34 @@ public class NoteManager extends DailyManageOutline {
 		}
 	}
 
-	private boolean isOutOfRange(String string) {
+	public boolean isOutOfRange(String string) {
 		int length = string.length();
-		if(length>30 || length<=0)
+		if(length>MAXIMUM_SIZE_OF_NOTE_CONTENTS || length<=0)
 			return true;
 		else
 			return false;
 	}
 	
 	public void delete() {
-		//Need refactoring
+		int id_to_be_deleted = getNoteIdToBeDeleted();
+		if(isExistingNote(id_to_be_deleted)){
+			if(alarmWhenDelete())
+				noteData.remove(id_to_be_deleted);
+			setPopUpWindow("노트" + id_to_be_deleted + "가 삭제되었습니다.");
+		}else
+			System.out.println("해당 ID의 노트가 없습니다");
+	}
+	
+	public int getNoteIdToBeDeleted() {
 		Scanner sc = new Scanner(System.in);
+		int note_id;
 		System.out.print("삭제할 노트의 ID를 입력하세요 : ");
 		try{
-			int id_to_be_deleted = sc.nextInt();
-			if(isExistingNote(id_to_be_deleted)){
-				if(alarmWhenDelete())
-					noteData.remove(id_to_be_deleted);
-				setPopUpWindow("노트" + id_to_be_deleted + "가 삭제되었습니다.");
-			}else
-				System.out.println("해당 ID의 노트가 없습니다");
-
+			note_id = sc.nextInt();
+			return note_id;
 		}catch(InputMismatchException ime){
 			System.out.println("정상적인 ID의 형태가 아닙니다.");
-			if(alarmWhenCancel())
-				return;
-			else
-				delete();
+			return -1;
 		}
 	}
 	
@@ -125,14 +132,16 @@ public class NoteManager extends DailyManageOutline {
 		}
 		System.out.println("==============저장된 노트===============");
 		System.out.println("id\t contents");
-		for(int i=0;i<noteData.size();i++){
+		for(int i = 0; i < noteData.size(); i++){
 			Note noteForView = noteData.elementAt(i);
-			System.out.println(i+"\t "+noteForView.getContents());
+			System.out.println(i + "\t " + noteForView.getContents());
 		}
 		System.out.println("====================================");	
 	}
 
-	private boolean isExistingNote(int note_id) {
+	public boolean isExistingNote(int note_id) {
+		if(noteData.size() == 0)
+			return false;
 		if(note_id < 0)
 			return false;
 		if(note_id > noteData.size())
@@ -140,7 +149,7 @@ public class NoteManager extends DailyManageOutline {
 		return true;
 	}
 	
-	public void saveAndExit() {
+	private void saveAndExit() {
 		String outputFilePath = "database\\"+user_id+"_noteDB.txt";
 		try {
 			FileOutputStream fileoutputstream = new FileOutputStream(outputFilePath);

@@ -14,12 +14,14 @@ public class Menu {
 		accountmanager = new AccountManager();
 		boolean isLoginSuccess = false;
 		
-		do{
+		do {
 			isLoginSuccess = accountmanager.logIn();
-		}while(!isLoginSuccess);
+		} while(!isLoginSuccess);
+		
 		userID = accountmanager.getId();
-		userPassword = accountmanager.getPassword();
-		do{
+		userPassword = accountmanager.getPassword();		
+		do {
+
 			printMenu();
 			int userChoice = getInputAndHandleException();
 			switch(userChoice){
