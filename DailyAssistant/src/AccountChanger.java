@@ -3,12 +3,17 @@ import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 public class AccountChanger {
-	
+	private static AccountManager accountmanager;
 	public String id;
 	public String password;
 	
 	public AccountChanger() {
+		accountmanager = new AccountManager();
+		id = accountmanager.getId();
+		password = accountmanager.getPassword();
+		System.out.println(password);
 		identifyPassword(password);
+		System.out.println(password);
 		askUserNextAction();
 	}
 	

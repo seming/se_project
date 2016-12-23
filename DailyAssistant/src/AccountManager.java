@@ -23,13 +23,43 @@ public class AccountManager implements Serializable{
 	}
 	
 	public String getId() {
-		return id;
+		return this.id;
+	}
+	
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public void setId(String newId) {
+		id = newId;
+		while(true) {
+			for(int i=0; i<idData.size(); i++) {
+				if(id.equals(idData.get(i))){
+					idData.setElementAt(id, i);
+					saveIdData();
+					break;
+				}
+			}
+		}
+	}
+	
+	public void setPassword(String newPassword) {
+		password = newPassword;
+		while(true) {
+			for(int i=0; i<passwordData.size(); i++) {
+				if(id.equals(passwordData.get(i))){
+					idData.setElementAt(password, i);
+					savePasswordData();
+					break;
+				}
+			}
+		}
 	}
 	
 	private void getSavedIdData() {
 		String inputFilePath = "database\\idDB.txt";
 		createNewFileIfNoFile(inputFilePath);
-		try {
+		/*try {
 			FileInputStream fileInputStream = new FileInputStream(inputFilePath);
 			isFileEmpty = fileInputStream.read();
 			if(isFileEmpty != -1) {
@@ -41,11 +71,19 @@ public class AccountManager implements Serializable{
 		}
 		catch(Exception exc) {
 			System.out.println("오류가 발생하였습니다"+exc);
+		}*/
+		try {
+			FileInputStream fileInputStream = new FileInputStream(inputFilePath);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			idData = (Vector<String>) objectInputStream.readObject();
+			objectInputStream.close();
+			fileInputStream.close();
 		}
+		catch (Exception exc) {}
 	}
 	
 	private void getSavedPasswordData() {
-		String inputFilePath = "database\\passwordDB.txt";
+		/*String inputFilePath = "database\\passwordDB.txt";
 		createNewFileIfNoFile(inputFilePath);
 		try {
 			FileInputStream fileInputStream = new FileInputStream(inputFilePath);
@@ -58,7 +96,17 @@ public class AccountManager implements Serializable{
 		}
 		catch(Exception exc) {
 			System.out.println("오류가 발생하였습니다"+exc);
+		}*/
+		String inputFilePath = "database\\passwordDB.txt";
+		createNewFileIfNoFile(inputFilePath);
+		try {
+			FileInputStream fileInputStream = new FileInputStream(inputFilePath);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			passwordData = (Vector<String>) objectInputStream.readObject();
+			objectInputStream.close();
+			fileInputStream.close();
 		}
+		catch (Exception exc) {}
 	}
 	
 	private void createNewFileIfNoFile(String inputfilepath) {

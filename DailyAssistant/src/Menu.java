@@ -7,6 +7,7 @@ public class Menu {
 	private static PhonebookManager phonebookmanager;
 	private static ScheduleManager schedulemanager;
 	private static NoteManager notemanager;
+	private static AccountChanger accountchanger;
 
 	public static void main(String[] args) {		
 		accountmanager = new AccountManager();
@@ -15,7 +16,7 @@ public class Menu {
 		do{
 			isLoginSuccess = accountmanager.logIn();
 		}while(!isLoginSuccess);
-		
+		userID = accountmanager.getId();
 		do{
 			printMenu();
 			int userChoice = getInputAndHandleException();
@@ -33,6 +34,10 @@ public class Menu {
 				notemanager.askUserNextAction();
 				break;
 			case 4:
+				accountchanger = new AccountChanger();
+				accountchanger.askUserNextAction();
+				break;
+			case 5:
 				System.out.println("Daily Assistant를 종료합니다.");
 				return;
 			default:
@@ -45,6 +50,7 @@ public class Menu {
 		System.out.println("1. 스케줄 관리");
 		System.out.println("2. 전화번호부 관리");
 		System.out.println("3. 노트 관리");
+		System.out.println("4. 아이디 혹은 비밀번호 변경");
 		System.out.println("4. 종료");
 		System.out.print("입력하세요 : ");
 	}
