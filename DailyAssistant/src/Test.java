@@ -47,6 +47,7 @@ public class Test {
 		AccountManager accountManager = new AccountManager();
 		assertTrue(accountManager.checkLength("asdf"));
 		assertFalse(accountManager.checkLength("qwertyuiopasdfghjkl"));
+	}
 	
 	@org.junit.Test
 	public void testIsOutOfRange() {
