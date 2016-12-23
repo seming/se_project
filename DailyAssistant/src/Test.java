@@ -1,4 +1,4 @@
-/*import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 public class Test {
 	
 	@org.junit.Test
@@ -16,10 +16,7 @@ public class Test {
 		assertTrue(phonebookManager.isEmptyNameOrEmptyNumber("", "0212345678"));
 		assertTrue(phonebookManager.isEmptyNameOrEmptyNumber("John", ""));
 	}
-<<<<<<< HEAD
-}*/
-=======
-	
+
 	@org.junit.Test
 	public void testDayIsOutOfRange() {
 		ScheduleManager scheduleManager = new ScheduleManager("0000");
@@ -35,4 +32,3 @@ public class Test {
 		assertFalse(scheduleManager.isSkipped(0));		
 	}
 }
->>>>>>> origin/master
