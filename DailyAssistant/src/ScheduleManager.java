@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class ScheduleManager extends DailyManageOutline {
-	public String user_id;
+	private String user_id;
 	private Vector<Schedule> scheduleData;
 	
 	public ScheduleManager(String userID) {
@@ -21,19 +21,26 @@ public class ScheduleManager extends DailyManageOutline {
 		getSavedScheduleData();
 	}
 
-	private void getSavedScheduleData() {
+	public void getSavedScheduleData() {
 		String inputFilePath = "database\\"+user_id+"_scheduleDB.txt";
 		createNewFileIfNoFile(inputFilePath);
 		try {
-			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
-			if ((fileinputstream.read()) != -1){
-				ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
-				scheduleData = (Vector<Schedule>) objectinputstream.readObject();
-				objectinputstream.close();
+			FileInputStream fileInputStream = new FileInputStream(inputFilePath);
+			ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+			scheduleData = (Vector<Schedule>) objectInputStream.readObject();
+			objectInputStream.close();
+			fileInputStream.close();
 		}
-			fileinputstream.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		catch (Exception exc) {}
+	}
+	
+	private void createNewFileIfNoFile(String inputfilepath) {
+		File inputfile = new File(inputfilepath);
+		if(!inputfile.isFile()){
+			try {
+				inputfile.createNewFile();
+			}
+			catch (IOException e) {}
 		}
 	}
 	
@@ -69,15 +76,6 @@ public class ScheduleManager extends DailyManageOutline {
 		System.out.print("ют╥б : ");
 	}
 
-	private void createNewFileIfNoFile(String inputfilepath) {
-		File inputfile = new File(inputfilepath);
-		if(!inputfile.isFile()){
-			try {
-				inputfile.createNewFile();
-			} catch (IOException e) {}
-		}
-	}
-	
 	@Override
 	public void add() {		
 		// TODO Auto-generated method stub

@@ -16,4 +16,23 @@ public class Test {
 		assertTrue(phonebookManager.isEmptyNameOrEmptyNumber("", "0212345678"));
 		assertTrue(phonebookManager.isEmptyNameOrEmptyNumber("John", ""));
 	}
+<<<<<<< HEAD
 }*/
+=======
+	
+	@org.junit.Test
+	public void testDayIsOutOfRange() {
+		ScheduleManager scheduleManager = new ScheduleManager("0000");
+		assertTrue(scheduleManager.DayIsOutOfRange(2010, 9, 31));
+		assertFalse(scheduleManager.DayIsOutOfRange(2010, 9, 30));
+		assertFalse(scheduleManager.DayIsOutOfRange(2010, 7, 31));
+	}
+	
+	@org.junit.Test	
+	public void testIsSkipped() {
+		ScheduleManager scheduleManager = new ScheduleManager("0000");
+		assertTrue(scheduleManager.isSkipped(-1));
+		assertFalse(scheduleManager.isSkipped(0));		
+	}
+}
+>>>>>>> origin/master
