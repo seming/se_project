@@ -2,13 +2,18 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
-public class AccountChanger {
+public class AccountChanger extends AccountManager{
+	private static AccountManager accountmanager;
+	String id;
+	String password;
 	
-	public String id;
-	public String password;
-	
-	public AccountChanger() {
+	public AccountChanger(String userID, String userPassword) {
+		accountmanager = new AccountManager();
+		id = userID;
+		password = userPassword;
+		System.out.println(password);
 		identifyPassword(password);
+		System.out.println(password);
 		askUserNextAction();
 	}
 	
@@ -67,6 +72,7 @@ public class AccountChanger {
 			isIdInformationSame = checkIdInformationSame(newIdForChange, newIdForIdentify);
 			if(isIdInformationSame) {
 				id = changeToNewValue(newIdForChange);
+				accountmanager.setId(id);
 				System.out.println("아이디가 성공적으로 변경되었습니다.");
 			}
 			else{
@@ -87,6 +93,7 @@ public class AccountChanger {
 			isPasswordInformationSame = checkPasswordInformationSame(newPasswordForChange, newPasswordForIdentify);
 			if(isPasswordInformationSame) {
 				password = changeToNewValue(newPasswordForChange);
+				accountmanager.setPassword(password);
 				System.out.println("비밀번호가 성공적으로 변경되었습니다.");
 			}
 			else{
