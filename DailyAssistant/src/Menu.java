@@ -15,7 +15,8 @@ public class Menu {
 			int userChoice = getInputAndHandleException();
 			switch(userChoice){
 			case 1:
-				//schedulemanager.askUserNextAction();
+				schedulemanager = new ScheduleManager(userID);
+				schedulemanager.askUserNextAction();
 				break;
 			case 2:
 				phonebookmanager = new PhonebookManager(userID);
