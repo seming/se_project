@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Menu {
 	private static String userID;
+	private static String userPassword;
 	private static AccountManager accountmanager;
 	private static PhonebookManager phonebookmanager;
 	private static ScheduleManager schedulemanager;
@@ -17,6 +18,7 @@ public class Menu {
 			isLoginSuccess = accountmanager.logIn();
 		}while(!isLoginSuccess);
 		userID = accountmanager.getId();
+		userPassword = accountmanager.getPassword();
 		do{
 			printMenu();
 			int userChoice = getInputAndHandleException();
@@ -34,7 +36,7 @@ public class Menu {
 				notemanager.askUserNextAction();
 				break;
 			case 4:
-				accountchanger = new AccountChanger();
+				accountchanger = new AccountChanger(userID, userPassword);
 				accountchanger.askUserNextAction();
 				break;
 			case 5:
@@ -51,7 +53,7 @@ public class Menu {
 		System.out.println("2. 전화번호부 관리");
 		System.out.println("3. 노트 관리");
 		System.out.println("4. 아이디 혹은 비밀번호 변경");
-		System.out.println("4. 종료");
+		System.out.println("5. 종료");
 		System.out.print("입력하세요 : ");
 	}
 

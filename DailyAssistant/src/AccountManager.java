@@ -228,6 +228,8 @@ public class AccountManager implements Serializable{
 		passwordData.addElement(password);
 		System.out.println("회원가입 완료");
 		isSignUp = true;
+		saveIdData();
+		savePasswordData();
 	}
 	
 	private void getAccountInformation() {
