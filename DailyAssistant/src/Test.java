@@ -1,4 +1,5 @@
 import static org.junit.Assert.*;
+
 import java.util.Scanner;
 
 public class Test {
@@ -53,5 +54,13 @@ public class Test {
 		assertTrue(notemanager.isOutOfRange(""));
 		assertTrue(notemanager.isOutOfRange("123456789012345678901234567890"));
 		assertFalse(notemanager.isOutOfRange("12345678901234567890123456789"));
+	}
+	
+	@org.junit.Test
+	public void testIsCorrectFormOfAnswer() {
+		NoteManager notemanager = new NoteManager("1111");
+		assertTrue(notemanager.isCorrectFormOfAnswer(1));
+		assertTrue(notemanager.isCorrectFormOfAnswer(2));
+		assertFalse(notemanager.isCorrectFormOfAnswer(4));
 	}
 }
