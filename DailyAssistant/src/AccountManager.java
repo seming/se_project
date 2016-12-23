@@ -235,7 +235,7 @@ public class AccountManager implements Serializable{
 	private void getAccountInformation() {
 		Scanner scan = new Scanner (System.in);
 		
-		System.out.println("아이디를 입력해주세요");
+		System.out.println("아이디를 입력해주세요.");
 		id = scan.nextLine();
 		System.out.println("비밀번호를 입력해주세요");
 		password = scan.nextLine();
