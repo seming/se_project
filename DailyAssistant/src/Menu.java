@@ -3,12 +3,15 @@ import java.util.Scanner;
 
 public class Menu {
 	private static String userID;
+	private static AccountManager accountmanager;
 	private static PhonebookManager phonebookmanager;
 	private static ScheduleManager schedulemanager;
 	private static NoteManager notemanager;
 
-	public static void main(String[] args) {
-		//Need to code user-login after complete Account.
+	public static void main(String[] args) {		
+		accountmanager = new AccountManager();
+		
+		accountmanager.logIn();
 		
 		do{
 			printMenu();

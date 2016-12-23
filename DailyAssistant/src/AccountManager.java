@@ -5,15 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-public class Account {
+public class AccountManager {
 
 	private String id;
 	private String password;
 	Vector idData = new Vector();
 	Vector passwordData = new Vector();
 	
-	public Account() {
-		// TODO Auto-generated method stub
+	public AccountManager() {
+		
 	}
 	
 	private void getSavedIdData() {
@@ -42,22 +42,26 @@ public class Account {
 		}
 	}
 	
-	public boolean logIn(String id, String password) {
+	public boolean logIn() {
 		
-		getAccountInformation();
-		
-		
-		
+			getAccountInformation();
+			
 		return false;
 	}
 	
 	public void signUp() {
+		boolean accountLengthChecker = false;
 		
-		System.out.println("아이디와 비밀번호는 15자이내로 입력해주세요.");
-		getAccountInformation();
-		
-		
+		do{
+			System.out.println("아이디와 비밀번호는 15자이내로 입력해주세요.");
+			getAccountInformation();
+			accountLengthChecker = checkAccountLength(id, password);
+			if(!accountLengthChecker) {
+				System.out.println("아이디나 비밀번호가 15자를 넘어갑니다.");
+				System.out.println("다시 입력해주세요.");
+			}
 			
+		}while(!accountLengthChecker);	
 	}
 	
 	private void getAccountInformation() {
@@ -69,5 +73,28 @@ public class Account {
 		password = scan.nextLine();
 	}
 	
+	private boolean checkAccountLength(String id, String password) {
+		boolean idLengthChecker = checkLength(id);
+		boolean passwordLengthChecker = checkLength(password);
+		
+		if(idLengthChecker == true && passwordLengthChecker == true) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	
+	private boolean checkLength(String stringForCheck) {
+		int lengthChecker = stringForCheck.length();
+		
+		if(lengthChecker <= 15) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
 }
