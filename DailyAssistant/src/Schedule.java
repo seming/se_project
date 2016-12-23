@@ -9,7 +9,7 @@ public class Schedule implements Serializable{
 	private String contents;
 	
 
-	public Schedule(String userID, Date date, String contents) {
+	public Schedule(Date date, String contents) {
 		this.userID = userID;
 		this.year = date.getYear();
 		this.month = date.getMonth();

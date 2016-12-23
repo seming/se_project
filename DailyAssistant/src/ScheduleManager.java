@@ -1,3 +1,4 @@
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,7 +14,6 @@ import java.util.Vector;
 public class ScheduleManager extends DailyManageOutline {
 	public String user_id;
 	private Vector<Schedule> scheduleData;
-	private Vector<Schedule> oneUserScheduleData = null;
 	
 	public ScheduleManager(String userID) {
 		this.user_id = userID;
@@ -21,16 +21,18 @@ public class ScheduleManager extends DailyManageOutline {
 		if(DataIsEmpty()){
 			System.out.println("저장된 일정이 없습니다");
 		}
-		else
+		else{
 			viewAllList();
-		
+		}
 		askUserNextAction();
 	}
 
 	public void askUserNextAction() {
 		Scanner scan = new Scanner(System.in);
 		do {
-			viewAllList();
+			if (scheduleData!=null){
+				viewAllList();
+			}
 			printMenu();
 			int menuNumber = scan.nextInt();
 			switch(menuNumber) {
@@ -58,39 +60,39 @@ public class ScheduleManager extends DailyManageOutline {
 	}
 	
 	public boolean DataIsEmpty(){
-		for(int i = 0; i < scheduleData.size(); i++) {
-			if (scheduleData.get(i).getUserID().equals(user_id)){
-				return false;
-			}
-			
-		}
-		return true;
+		if (scheduleData == null)
+			return true;
+		else
+			return false;
 	}
 	
-	public void getSavedScheduleData() {
-		String inputFilePath = "scheduleDB.txt";
- 		File inputfile = new File(inputFilePath);
- 		
- 		if(!inputfile.isFile()){
- 			try {
- 				inputfile.createNewFile();	
- 				
- 			} catch (IOException e) {
- 				e.printStackTrace();
- 			}
- 		}
-
- 		try {
- 			FileInputStream fileinputstream = new FileInputStream(inputFilePath); 
- 			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
- 			scheduleData = (Vector<Schedule>) objectinputstream.readObject();
- 			objectinputstream.close();
- 			fileinputstream.close();
- 		} catch (Exception e) {
- 			e.printStackTrace();
- 		}
+	private void getSavedScheduleData() {
+		String inputFilePath = "database\\"+user_id+"_scheduleDB.txt";
+		createNewFileIfNoFile(inputFilePath);
+		File inputfile = new File(inputFilePath);
+		try {
+			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
+			int i;
+			if ((i = fileinputstream.read()) != -1){
+				ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
+				scheduleData = (Vector<Schedule>) objectinputstream.readObject();
+				objectinputstream.close();
+		}
+			fileinputstream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
+	private void createNewFileIfNoFile(String inputfilepath) {
+		File inputfile = new File(inputfilepath);
+		if(!inputfile.isFile()){
+			try {
+				inputfile.createNewFile();
+			} catch (IOException e) {}
+		}
+	}
+	
 	public void saveAndExit() {
 		String outputFilePath = "scheduleDB.txt";
 		try {
@@ -131,7 +133,7 @@ public class ScheduleManager extends DailyManageOutline {
 				break;
 			}				
 		}while(newMonth < 1 || newMonth > 12);
-		
+
 		System.out.print("추가할 일정의 일을 입력하십시오 (건너뛰려면 '-1'을 입력): ");
 		do{
 			newDay = scan.nextInt();
@@ -146,7 +148,7 @@ public class ScheduleManager extends DailyManageOutline {
 			newDay = lastDayOfMonth(newYear, newMonth, newDay);
 		}
 		
-		System.out.print("추가할 일정의 내용을 입력하십시오 (작성을 취소하려면 '-1'을 입력): ");
+		System.out.println("추가할 일정의 내용을 입력하십시오 (작성을 취소하려면 '-1'을 입력): ");
 		do{
 			newContents = scan.nextLine();
 			if (newContents.equals("-1")){
@@ -163,7 +165,7 @@ public class ScheduleManager extends DailyManageOutline {
 
 		newContents = checkLengthOFContentsAndModifyIfOutOfRange(newContents);
 		Date scheduleDate = new Date(newYear, newMonth, newDay);
-		Schedule newSchedule = new Schedule(user_id, scheduleDate, newContents);
+		Schedule newSchedule = new Schedule(scheduleDate, newContents);
 		scheduleData.addElement(newSchedule);
 		setPopUpWindow("저장되었습니다");
 	}
@@ -195,27 +197,22 @@ public class ScheduleManager extends DailyManageOutline {
 		// TODO Auto-generated method stub
 		System.out.print("삭제할 일정의 좌측 번호를 입력하세요");
 		Scanner scan = new Scanner(System.in);
-		int index = scan.nextInt();
-		Schedule scheduleToBeDeleted = oneUserScheduleData.get(index);
-		index = scheduleData.indexOf(scheduleToBeDeleted);
+		int index;
+		do{
+			index = scan.nextInt();
+		}while(scheduleData.lastIndexOf(scheduleData) < index  || index < 0);
 		scheduleData.remove(index);		
 	}
 
 	@Override
 	public void viewAllList() {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < scheduleData.size(); i++){
-			if (scheduleData.get(i).equals(user_id)){
-				oneUserScheduleData.addElement(scheduleData.get(i));
-			}
-		}
-		
 		System.out.println("==============저장된 일정===============");
-		for(int i = 0; i < oneUserScheduleData.size(); i++) {
+		for(int i = 0; i < scheduleData.size(); i++) {
 			System.out.print(i+". ");
-			System.out.print(oneUserScheduleData.get(i).getYear()+"연");
-			System.out.print(oneUserScheduleData.get(i).getMonth()+"월");
-			System.out.println(oneUserScheduleData.get(i).getDay()+"일");
+			System.out.print(scheduleData.get(i).getYear()+"연");
+			System.out.print(scheduleData.get(i).getMonth()+"월");
+			System.out.println(scheduleData.get(i).getDay()+"일");
 			System.out.println("일정 : " + scheduleData.get(i).getContents());
 		}
 		System.out.println("====================================");
