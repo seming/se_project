@@ -1,17 +1,24 @@
+import java.io.Serializable;
+import java.util.Date;
 
-public class Schedule {
-	
-	private int schedule_id;
+public class Schedule implements Serializable{
+	private String userID;
 	private int year;
 	private int month;
 	private int day;
 	private String contents;
 	
-	public int getSchedule_id() {
-		return schedule_id;
+
+	public Schedule(Date date, String contents) {
+		this.userID = userID;
+		this.year = date.getYear();
+		this.month = date.getMonth();
+		this.day = date.getDay();
+		this.contents = contents;
 	}
-	public void setSchedule_id(int schedule_id) {
-		this.schedule_id = schedule_id;
+	
+	public String getUserID(){
+		return userID;
 	}
 	public int getYear() {
 		return year;
