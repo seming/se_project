@@ -251,7 +251,7 @@ public class AccountManager implements Serializable{
 		}
 	}
 	
-	private boolean checkLength(String stringForCheck) {
+	public boolean checkLength(String stringForCheck) {
 		int lengthChecker = stringForCheck.length();
 		
 		if(lengthChecker <= 15) {

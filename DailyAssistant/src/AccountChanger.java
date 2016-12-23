@@ -107,7 +107,7 @@ public class AccountChanger extends AccountManager{
 		return newValue;
 	}
 	
-	private void getInformation(String newInformation, String newInformationForIdentify) {
+	public void getInformation(String newInformation, String newInformationForIdentify) {
 		Scanner scan = new Scanner (System.in);
 		System.out.printf("변경내용입력 : " );
 		newInformation = scan.nextLine();
@@ -115,7 +115,7 @@ public class AccountChanger extends AccountManager{
 		newInformationForIdentify = scan.nextLine();
 	}
 	
-	private boolean checkPasswordForIdentifySame(String passwordForIdentify) {
+	public boolean checkPasswordForIdentifySame(String passwordForIdentify) {
 		if (passwordForIdentify.equals(password)) {
 			return true;
 		}
@@ -123,7 +123,7 @@ public class AccountChanger extends AccountManager{
 			return false;
 		}
 	}
-	private boolean checkIdInformationSame(String newIdForChange, String newIdForIdentify) {
+	public boolean checkIdInformationSame(String newIdForChange, String newIdForIdentify) {
 		if(newIdForChange.equals(newIdForIdentify)) {
 			return true;
 		}
@@ -132,7 +132,7 @@ public class AccountChanger extends AccountManager{
 		}
 	}
 	
-	private boolean checkPasswordInformationSame(String newPasswordForChange, String newPasswordForIdentify) {
+	public boolean checkPasswordInformationSame(String newPasswordForChange, String newPasswordForIdentify) {
 		if(newPasswordForChange.equals(newPasswordForIdentify)) {
 			return true;
 		}
