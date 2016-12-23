@@ -1,6 +1,6 @@
+import java.io.Serializable;
 
-public class Note {
-	
+public class Note implements Serializable {
 	private int note_id;
 	private String contents;
 	
