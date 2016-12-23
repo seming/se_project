@@ -25,9 +25,11 @@ public class NoteManager extends DailyManageOutline {
 		createNewFileIfNoFile(inputFilePath);
 		try {
 			FileInputStream fileinputstream = new FileInputStream(inputFilePath);
-			ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
-			noteData = (Vector<Note>) objectinputstream.readObject();
-			objectinputstream.close();
+			if(fileinputstream.read() > 0){
+				ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
+				noteData = (Vector<Note>) objectinputstream.readObject();
+				objectinputstream.close();
+			}
 			fileinputstream.close();
 		} catch (Exception e) {}
 	}
@@ -98,24 +100,25 @@ public class NoteManager extends DailyManageOutline {
 	}
 	
 	public void delete() {
-		//Need refactoring
+		int id_to_be_deleted = getNoteIdToBeDeleted();
+		if(isExistingNote(id_to_be_deleted)){
+			if(alarmWhenDelete())
+				noteData.remove(id_to_be_deleted);
+			setPopUpWindow("노트" + id_to_be_deleted + "가 삭제되었습니다.");
+		}else
+			System.out.println("해당 ID의 노트가 없습니다");
+	}
+	
+	private int getNoteIdToBeDeleted() {
 		Scanner sc = new Scanner(System.in);
+		int note_id;
 		System.out.print("삭제할 노트의 ID를 입력하세요 : ");
 		try{
-			int id_to_be_deleted = sc.nextInt();
-			if(isExistingNote(id_to_be_deleted)){
-				if(alarmWhenDelete())
-					noteData.remove(id_to_be_deleted);
-				setPopUpWindow("노트" + id_to_be_deleted + "가 삭제되었습니다.");
-			}else
-				System.out.println("해당 ID의 노트가 없습니다");
-
+			note_id = sc.nextInt();
+			return note_id;
 		}catch(InputMismatchException ime){
 			System.out.println("정상적인 ID의 형태가 아닙니다.");
-			if(alarmWhenCancel())
-				return;
-			else
-				delete();
+			return -1;
 		}
 	}
 	
