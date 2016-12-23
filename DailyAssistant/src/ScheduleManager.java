@@ -30,9 +30,10 @@ public class ScheduleManager extends DailyManageOutline {
 				ObjectInputStream objectinputstream = new ObjectInputStream(fileinputstream);
 				scheduleData = (Vector<Schedule>) objectinputstream.readObject();
 				objectinputstream.close();
-		}
+			}
 			fileinputstream.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -40,7 +41,7 @@ public class ScheduleManager extends DailyManageOutline {
 	public void askUserNextAction() {
 		Scanner scan = new Scanner(System.in);
 		do {
-			if (!scheduleData.isEmpty()){
+			if(!scheduleData.isEmpty()){
 				viewAllList();
 			}
 			printMenu();
@@ -74,55 +75,54 @@ public class ScheduleManager extends DailyManageOutline {
 		if(!inputfile.isFile()){
 			try {
 				inputfile.createNewFile();
-			} catch (IOException e) {}
+			}
+			catch (IOException e) {}
 		}
 	}
 	
-	@Override
-	public void add() {		
-		// TODO Auto-generated method stub
+	public void add() {	
 		Scanner scan = new Scanner(System.in);
 		int newYear = 1990;
 		int newMonth = 1;
 		int newDay = 1;
 		String newContents;
 		
-		do{
+		do {
 			System.out.print("추가할 일정의 연도(1990~2020년)를 입력하십시오 (건너뛰려면 '-1'를 입력): ");
 			newYear = scan.nextInt();
 			if (isSkipped(newYear)){
 				newYear = 1990;
 				break;
 			}				
-		}while(newYear < 1990 || newYear > 2020);
+		} while(newYear < 1990 || newYear > 2020);
 
-		do{
+		do {
 			System.out.print("추가할 일정의 월을 입력하십시오 (건너뛰려면 '-1'를 입력): ");
 			newMonth = scan.nextInt();
 			if (isSkipped(newMonth)){
 				newMonth = 1;
 				break;
 			}				
-		}while(newMonth < 1 || newMonth > 12);
+		} while(newMonth < 1 || newMonth > 12);
 
-		do{
+		do {
 			System.out.print("추가할 일정의 일을 입력하십시오 (건너뛰려면 '-1'를 입력): ");
 			newDay = scan.nextInt();
 			if (isSkipped(newDay)){
 				newDay = 1;
 				break;
 			}				
-		}while(newDay < 1 || newDay > 31);
+		} while(newDay < 1 || newDay > 31);
 
 		if (DayIsOutOfRange(newYear, newMonth, newDay)){
 			setPopUpWindow("존재하지 않는 날짜입니다. 마지막날로 변경합니다.");
 			newDay = 30;
 		}
 		scan.nextLine();
-		do{
+		do {
 			System.out.print("추가할 일정의 내용을 입력하십시오 (작성을 취소하려면 '-1'을 입력):");
 			newContents = scan.nextLine();
-			if (newContents.equals("-1")){
+			if(newContents.equals("-1")){
 				if(alarmWhenCancel()){
 					newContents = null;
 					break;
@@ -130,7 +130,7 @@ public class ScheduleManager extends DailyManageOutline {
 				else
 					;
 			}			
-		}while(newContents.isEmpty());
+		} while(newContents.isEmpty());
 
 		if(newContents == null){
 			return;
@@ -142,7 +142,7 @@ public class ScheduleManager extends DailyManageOutline {
 		setPopUpWindow("저장되었습니다");
 	}
 	
-	public boolean isSkipped(int signal){
+	public boolean isSkipped(int signal) {
 		if (signal == -1)
 			return true;
 		return false;
@@ -163,16 +163,14 @@ public class ScheduleManager extends DailyManageOutline {
 			return false;
 	}
 
-	@Override
 	public void delete() {
-		// TODO Auto-generated method
 		viewAllList();
 		System.out.print("삭제할 일정의 좌측 번호를 입력하세요:");
 		Scanner scan = new Scanner(System.in);
 		int toBeDeleted;
-		do{
+		do {
 			toBeDeleted = scan.nextInt(); 
-		}while(scheduleData.size() < toBeDeleted  || toBeDeleted < 0);
+		} while(scheduleData.size() < toBeDeleted  || toBeDeleted < 0);
 		if(alarmWhenDelete()){
 			scheduleData.remove(toBeDeleted);
 			System.out.println("삭제되었습니다");
@@ -181,9 +179,7 @@ public class ScheduleManager extends DailyManageOutline {
 			;
 	}
 
-	@Override
 	public void viewAllList() {
-		// TODO Auto-generated method stub
 		System.out.println("==============저장된 일정===============");
 		for(int i = 0; i < scheduleData.size(); i++) {
 			System.out.print(i+". ");
@@ -203,9 +199,9 @@ public class ScheduleManager extends DailyManageOutline {
 			objectoutputstream.writeObject(scheduleData);
 			fileoutputstream.close();
 			objectoutputstream.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 }

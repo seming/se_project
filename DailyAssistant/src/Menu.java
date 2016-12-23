@@ -12,11 +12,13 @@ public class Menu {
 		accountmanager = new AccountManager();
 		boolean isLoginSuccess = false;
 		
-		do{
+		do {
 			isLoginSuccess = accountmanager.logIn();
-		}while(!isLoginSuccess);
+		} while(!isLoginSuccess);
 		
-		do{
+		userID = accountmanager.getId();
+		
+		do {
 			printMenu();
 			int userChoice = getInputAndHandleException();
 			switch(userChoice){

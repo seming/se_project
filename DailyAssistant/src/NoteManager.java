@@ -12,11 +12,11 @@ import java.util.Vector;
 public class NoteManager extends DailyManageOutline {
 	private String user_id;
 	private Vector<Note> noteData;
-	private static final int MAXIMUM_SISE_OF_NOTE = 100;
+	private static final int MAXIMUM_SIZE_OF_NOTE = 100;
 
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
-		noteData = new Vector<Note>(MAXIMUM_SISE_OF_NOTE);
+		noteData = new Vector<Note>(MAXIMUM_SIZE_OF_NOTE);
 		getSavedNoteData();
 	}
 	
@@ -29,7 +29,8 @@ public class NoteManager extends DailyManageOutline {
 			noteData = (Vector<Note>) objectinputstream.readObject();
 			objectinputstream.close();
 			fileinputstream.close();
-		} catch (Exception e) {}
+		}
+		catch (Exception e) {}
 	}
 
 	private void createNewFileIfNoFile(String inputfilepath) {
@@ -37,7 +38,8 @@ public class NoteManager extends DailyManageOutline {
 		if(!inputfile.isFile()){
 			try {
 				inputfile.createNewFile();
-			} catch (IOException e) {}
+			}
+			catch (IOException e) {}
 		}
 	}
 	
@@ -91,26 +93,26 @@ public class NoteManager extends DailyManageOutline {
 
 	private boolean isOutOfRange(String string) {
 		int length = string.length();
-		if(length>30 || length<=0)
+		if(length > 30 || length <= 0)
 			return true;
 		else
 			return false;
 	}
 	
 	public void delete() {
-		//Need refactoring
 		Scanner sc = new Scanner(System.in);
 		System.out.print("삭제할 노트의 ID를 입력하세요 : ");
 		try{
-			int id_to_be_deleted = sc.nextInt();
-			if(isExistingNote(id_to_be_deleted)){
+			int idToBeDeleted = sc.nextInt();
+			if(isExistingNote(idToBeDeleted)){
 				if(alarmWhenDelete())
-					noteData.remove(id_to_be_deleted);
-				setPopUpWindow("노트" + id_to_be_deleted + "가 삭제되었습니다.");
+					noteData.remove(idToBeDeleted);
+				setPopUpWindow("노트" + idToBeDeleted + "가 삭제되었습니다.");
 			}else
 				System.out.println("해당 ID의 노트가 없습니다");
 
-		}catch(InputMismatchException ime){
+		}
+		catch(InputMismatchException ime){
 			System.out.println("정상적인 ID의 형태가 아닙니다.");
 			if(alarmWhenCancel())
 				return;
@@ -125,9 +127,9 @@ public class NoteManager extends DailyManageOutline {
 		}
 		System.out.println("==============저장된 노트===============");
 		System.out.println("id\t contents");
-		for(int i=0;i<noteData.size();i++){
+		for(int i = 0; i < noteData.size(); i++){
 			Note noteForView = noteData.elementAt(i);
-			System.out.println(i+"\t "+noteForView.getContents());
+			System.out.println(i + "\t " + noteForView.getContents());
 		}
 		System.out.println("====================================");	
 	}
