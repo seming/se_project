@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Menu {
 	private static String userID;
+	private static String userPassword;
 	private static AccountManager accountmanager;
 	private static PhonebookManager phonebookmanager;
 	private static ScheduleManager schedulemanager;
@@ -13,11 +14,14 @@ public class Menu {
 		accountmanager = new AccountManager();
 		boolean isLoginSuccess = false;
 		
-		do{
+		do {
 			isLoginSuccess = accountmanager.logIn();
-		}while(!isLoginSuccess);
+		} while(!isLoginSuccess);
+		
 		userID = accountmanager.getId();
-		do{
+		userPassword = accountmanager.getPassword();
+		
+		do {
 			printMenu();
 			int userChoice = getInputAndHandleException();
 			switch(userChoice){
@@ -34,7 +38,7 @@ public class Menu {
 				notemanager.askUserNextAction();
 				break;
 			case 4:
-				accountchanger = new AccountChanger();
+				accountchanger = new AccountChanger(userID, userPassword);
 				accountchanger.askUserNextAction();
 				break;
 			case 5:

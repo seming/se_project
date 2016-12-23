@@ -57,7 +57,7 @@ public class PhonebookManager extends DailyManageOutline {
 				saveAndExit();
 				return;
 			default :
-				System.out.println("잘못 입력하였습니다");
+				setPopUpWindow("잘못 입력하였습니다");
 				break;	
 			}
 		} while(true);
@@ -78,7 +78,7 @@ public class PhonebookManager extends DailyManageOutline {
 		String newNumber = scan.nextLine();
 		
 		if(isEmptyNameOrEmptyNumber(newName, newNumber)) {
-			System.out.println("이름 혹은 전화번호가 비어있습니다.");
+			setPopUpWindow("이름 혹은 전화번호가 비어있습니다.");
 			if(alarmWhenCancel() == true)
 				return;
 			else
@@ -88,7 +88,7 @@ public class PhonebookManager extends DailyManageOutline {
 			newNumber = checkNumberAndModifyIfOutOfRange(newNumber);
 			Phonebook newPhoneBook = new Phonebook(newName, newNumber);
 			phonebookData.addElement(newPhoneBook);
-			System.out.println("저장되었습니다");
+			setPopUpWindow("저장되었습니다");
 		}
 	}
 	
@@ -120,10 +120,10 @@ public class PhonebookManager extends DailyManageOutline {
 		if(index != -1) 
 			if(alarmWhenDelete()) {
 				phonebookData.remove(index);
-				System.out.println("삭제되었습니다");
+				setPopUpWindow("삭제되었습니다");
 			}
 		else
-			System.out.println("해당 전화번호가 없습니다");
+			setPopUpWindow("해당 전화번호가 없습니다");
 	}
 	
 	public int getIndexOfPhonebook(String phonename, String phonenumber) {

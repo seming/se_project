@@ -16,5 +16,4 @@ public class Note implements Serializable {
 	public void setContents(String contents) {
 		this.contents = contents;
 	}
-	
 }

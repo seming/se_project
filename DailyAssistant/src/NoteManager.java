@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collection;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Vector;
@@ -12,12 +13,12 @@ import java.util.Vector;
 public class NoteManager extends DailyManageOutline {
 	private String user_id;
 	private Vector<Note> noteData;
-	private static final int MAXIMUM_SISE_OF_NOTE = 100;
 	private static final int MAXIMUM_SIZE_OF_NOTE_CONTENTS = 30;
+	private static final int MAXIMUM_SIZE_OF_NOTE = 100;
 
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
-		noteData = new Vector<Note>(MAXIMUM_SISE_OF_NOTE);
+		noteData = new Vector<Note>(MAXIMUM_SIZE_OF_NOTE);
 		getSavedNoteData();
 	}
 	
@@ -32,7 +33,8 @@ public class NoteManager extends DailyManageOutline {
 				objectinputstream.close();
 			}
 			fileinputstream.close();
-		} catch (Exception e) {}
+		}
+		catch (Exception e) {}
 	}
 
 	private void createNewFileIfNoFile(String inputfilepath) {
@@ -40,7 +42,8 @@ public class NoteManager extends DailyManageOutline {
 		if(!inputfile.isFile()){
 			try {
 				inputfile.createNewFile();
-			} catch (IOException e) {}
+			}
+			catch (IOException e) {}
 		}
 	}
 	
@@ -129,9 +132,9 @@ public class NoteManager extends DailyManageOutline {
 		}
 		System.out.println("==============저장된 노트===============");
 		System.out.println("id\t contents");
-		for(int i=0;i<noteData.size();i++){
+		for(int i = 0; i < noteData.size(); i++){
 			Note noteForView = noteData.elementAt(i);
-			System.out.println(i+"\t "+noteForView.getContents());
+			System.out.println(i + "\t " + noteForView.getContents());
 		}
 		System.out.println("====================================");	
 	}
