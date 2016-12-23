@@ -94,7 +94,7 @@ public class ScheduleManager extends DailyManageOutline {
 	}
 	
 	public void saveAndExit() {
-		String outputFilePath = "scheduleDB.txt";
+		String outputFilePath = "database\\"+user_id+"_scheduleDB.txt";
 		try {
 			FileOutputStream fileoutputstream = new FileOutputStream(outputFilePath);
 			ObjectOutputStream objectoutputstream = new ObjectOutputStream(fileoutputstream);
