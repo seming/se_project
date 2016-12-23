@@ -31,4 +31,18 @@ public class Test {
 		assertTrue(scheduleManager.isSkipped(-1));
 		assertFalse(scheduleManager.isSkipped(0));		
 	}
+	
+	@org.junit.Test
+	public void testCheckIdInformationSame() {
+		AccountChanger accountChanger = new AccountChanger("0000", "0000");
+		assertTrue(accountChanger.checkIdInformationSame("asdf", "asdf"));
+		assertFalse(accountChanger.checkIdInformationSame("qwer", "asdf"));
+	}
+	
+	@org.junit.Test
+	public void testCheckLength() {
+		AccountManager accountManager = new AccountManager();
+		assertTrue(accountManager.checkLength("asdf"));
+		assertFalse(accountManager.checkLength("qwertyuiopasdfghjkl"));
+	}
 }
