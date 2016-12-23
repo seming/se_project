@@ -1,4 +1,6 @@
 import static org.junit.Assert.*;
+import java.util.Scanner;
+
 public class Test {
 	
 	@org.junit.Test
@@ -15,5 +17,13 @@ public class Test {
 		assertFalse(phonebookManager.isEmptyNameOrEmptyNumber("asdf", "02123456780"));
 		assertTrue(phonebookManager.isEmptyNameOrEmptyNumber("", "0212345678"));
 		assertTrue(phonebookManager.isEmptyNameOrEmptyNumber("John", ""));
+	}
+	
+	@org.junit.Test
+	public void testIsOutOfRange() {
+		NoteManager notemanager = new NoteManager("1111");
+		assertTrue(notemanager.isOutOfRange(""));
+		assertTrue(notemanager.isOutOfRange("123456789012345678901234567890"));
+		assertFalse(notemanager.isOutOfRange("12345678901234567890123456789"));
 	}
 }

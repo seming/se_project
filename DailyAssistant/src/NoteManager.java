@@ -13,6 +13,7 @@ public class NoteManager extends DailyManageOutline {
 	private String user_id;
 	private Vector<Note> noteData;
 	private static final int MAXIMUM_SISE_OF_NOTE = 100;
+	private static final int MAXIMUM_SIZE_OF_NOTE_CONTENTS = 30;
 
 	public NoteManager(String user_id) {
 		this.user_id = user_id;
@@ -91,9 +92,9 @@ public class NoteManager extends DailyManageOutline {
 		}
 	}
 
-	private boolean isOutOfRange(String string) {
+	public boolean isOutOfRange(String string) {
 		int length = string.length();
-		if(length>30 || length<=0)
+		if(length>MAXIMUM_SIZE_OF_NOTE_CONTENTS || length<=0)
 			return true;
 		else
 			return false;
@@ -109,7 +110,7 @@ public class NoteManager extends DailyManageOutline {
 			System.out.println("해당 ID의 노트가 없습니다");
 	}
 	
-	private int getNoteIdToBeDeleted() {
+	public int getNoteIdToBeDeleted() {
 		Scanner sc = new Scanner(System.in);
 		int note_id;
 		System.out.print("삭제할 노트의 ID를 입력하세요 : ");
@@ -135,7 +136,9 @@ public class NoteManager extends DailyManageOutline {
 		System.out.println("====================================");	
 	}
 
-	private boolean isExistingNote(int note_id) {
+	public boolean isExistingNote(int note_id) {
+		if(noteData.size() == 0)
+			return false;
 		if(note_id < 0)
 			return false;
 		if(note_id > noteData.size())
@@ -143,7 +146,7 @@ public class NoteManager extends DailyManageOutline {
 		return true;
 	}
 	
-	public void saveAndExit() {
+	private void saveAndExit() {
 		String outputFilePath = "database\\"+user_id+"_noteDB.txt";
 		try {
 			FileOutputStream fileoutputstream = new FileOutputStream(outputFilePath);
